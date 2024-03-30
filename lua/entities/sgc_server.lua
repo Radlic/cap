@@ -54,6 +54,9 @@ ENT.ValidGates = {
 	["stargate_sg1"]=true,
 	["stargate_infinity"]=true,
 	["stargate_movie"]=true,
+	["stargate_sg1_hd"]=true,
+	["stargate_movie_hd"]=true,
+	["stargate_sg1_beta_hd"]=true,
 }
 
 util.AddNetworkString("SGCScreen");
@@ -507,8 +510,8 @@ function ENT:Think()
 		if self.DCError ~= 0 and CurTime()-self.DCErrorTimer > 10 or active and chevron >= 0 then
 			self.DCError = 0
 		end
-
-		local movie = self.LockedGate:GetClass() == "stargate_movie"
+		
+		local movie = self.LockedGate:GetClass() == "stargate_movie_hd"
 		self:SetNW2Bool("IsMovie",movie)
 		--Symbol animation triggers
 		local LastSecond = not open and LastChev and locked

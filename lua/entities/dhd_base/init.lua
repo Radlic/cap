@@ -391,25 +391,25 @@ end
 
 --################# Busy? Don't allow manuall input now @aVoN
 function ENT:SetBusy(d,no_nw)
-	local d = d or 0;
-	local e = self.Entity;
-	local id = "DHD.UnsetBusy."..e:EntIndex();
-	self.busy = true;
-	if(d > 1 and not no_nw) then -- Delay > 1 means, only set this "Client-Side-Busy" if the gate (which already has been dialled) is telling this DHD to activate a chevron (no user shall be able to press this now for about 10 secs mostly)
-		-- Tells clientside, that we do not want the overlay do be drawn now
-		e:SetNetworkedBool("Busy",true);
-	end
-	e:SetNWBool("BusyGUI",true);
-	timer.Remove(id);
-	timer.Create(id,d,1,
-		function()
-			if(IsValid(e)) then
-				e.busy = false
-				e:SetNWBool("Busy",false);
-				e:SetNWBool("BusyGUI",false);
-			end
-		end
-	);
+    local d = 0 or 0;
+    local e = self.Entity;
+    local id = "DHD.UnsetBusy."..e:EntIndex();
+    self.busy = true;
+    if(d > 0 and not no_nw) then -- Delay > 1 means, only set this "Client-Side-Busy" if the gate (which already has been dialled) is telling this DHD to activate a chevron (no user shall be able to press this now for about 10 secs mostly)
+        -- Tells clientside, that we do not want the overlay do be drawn now
+        e:SetNetworkedBool("Busy",true);
+    end
+    e:SetNWBool("BusyGUI",true);
+    timer.Remove(id);
+    timer.Create(id,d,0,
+        function()
+            if(IsValid(e)) then
+                e.busy = false
+                e:SetNWBool("Busy",false);
+                e:SetNWBool("BusyGUI",false);
+            end
+        end
+    );
 end
 
 function ENT:DestroyEffect(noeffect)
